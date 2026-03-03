@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro de Asistencia</title>
+
+<style>
+body{
+font-family: Arial;
+background:#f4f4f4;
+text-align:center;
+padding:40px;
+}
+
+form{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+max-width:400px;
+margin:auto;
+}
+
+input, select{
+width:90%;
+padding:10px;
+margin:10px 0;
+}
+
+button{
+padding:10px 20px;
+background:#007bff;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#0056b3;
+}
+</style>
+
+</head>
+<body>
+
+<h2>📲 Registro de Asistencia</h2>
+
+<form id="formAsistencia">
+<input type="text" id="nombre" placeholder="Nombre y Apellido" required>
+
+<select id="curso" required>
+<option value="">Selecciona tu curso</option>
+<option value="Primero">Primero</option>
+<option value="Segundo">Segundo</option>
+<option value="Tercero">Tercero</option>
+</select>
+
+<button type="submit">Registrar Asistencia</button>
+</form>
+
+<p id="mensaje"></p>
+
+<script>
+
+const scriptURL = "https://script.google.com/macros/s/AKfycbz0JQIRtl--jGUUE69WIsN-XljU2e9HmB3tXC5sGVDoaMAfqkSQ5aPKSyZqLQXf2Afj/exec";
+
+document.getElementById("formAsistencia").addEventListener("submit", function(e){
+e.preventDefault();
+
+let nombre = document.getElementById("nombre").value;
+let curso = document.getElementById("curso").value;
+
+fetch(scriptURL, {
+method: "POST",
+headers: {
+"Content-Type": "application/x-www-form-urlencoded"
+},
+body: "nombre=" + encodeURIComponent(nombre) +
+      "&curso=" + encodeURIComponent(curso)
+})
+.then(response => response.text())
+.then(data => {
+document.getElementById("mensaje").innerText =
+"✅ Asistencia registrada correctamente";
+this.reset();
+})
+.catch(error => {
+document.getElementById("mensaje").innerText =
+"❌ Error al registrar";
+console.error(error);
+});
+
+});
+
+</script>
+
+</body>
+</html>
